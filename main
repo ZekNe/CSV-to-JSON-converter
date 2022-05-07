@@ -1,0 +1,72 @@
+from tkinter import *
+from tkinter import scrolledtext
+from tkinter import messagebox
+
+top = Tk()
+top.geometry('800x600')
+top.title("CSV to JSON converter")
+
+def Convert():
+    test = csv_text.get("1.0", "end")
+    json_text.insert(INSERT, "[\n")
+    column_name = ""
+    row = []
+    
+    row = test.split("\n")
+    column_name = row[0].split(",")
+    row_number = len(row)
+    column_number = len(column_name)
+    r = 1
+
+    while r <= row_number - 2:
+
+        json_text.insert(INSERT, " {\n")
+        i = column_number
+        column = row[r].split(",")
+        n = 0
+
+        while i > 0:
+
+            json_text.insert(INSERT, "  ")
+            json_text.insert(INSERT, column_name[n])
+            json_text.insert(INSERT, ":")
+            json_text.insert(INSERT, column[n])
+            json_text.insert(INSERT, ",\n")
+
+            i -= 1
+            n += 1
+
+        r += 1
+        json_text.delete("end-1c")
+        json_text.delete("end-2c")
+        json_text.insert(INSERT, "\n },\n")
+
+    json_text.insert(INSERT, "]")
+
+    messagebox.showinfo("hello", column_number)
+
+# grid
+top.grid_rowconfigure(0, weight=1)
+top.grid_rowconfigure(1, weight=15)
+top.grid_rowconfigure(2, weight=5)
+top.grid_columnconfigure(0, weight=5)
+top.grid_columnconfigure(1, weight=1)
+top.grid_columnconfigure(2, weight=3)
+
+# Labels
+L1 = Label(top, text="CSV", font=("Times New Roman", 20))
+L1.grid(row = 0, column = 0, sticky='n', pady=15)
+L2 = Label(top, text="JSON", font=("Times New Roman", 20))
+L2.grid(row = 0, column = 2, sticky='n', pady=15)
+
+# TextBox
+csv_text = scrolledtext.ScrolledText(top, wrap=WORD, width=27, height=20, font=("Times New Roman", 15))
+csv_text.grid(row = 1, column = 0, sticky='n')
+json_text = scrolledtext.ScrolledText(top, wrap=WORD, width=27, height=20, font=("Times New Roman", 15))
+json_text.grid(row = 1, column = 2, sticky='n')
+
+# Buttons
+B1 = Button(top, text="Convert", command = Convert, font=("Times New Roman", 20))
+B1.grid(row = 2, column = 1, sticky='n')
+
+top.mainloop()
