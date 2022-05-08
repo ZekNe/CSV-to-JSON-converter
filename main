@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import scrolledtext
 from tkinter import messagebox
+from turtle import width
 
 top = Tk()
 top.geometry('1200x600')
@@ -34,9 +35,13 @@ def Convert():
 
             try:
                 json_text.insert(INSERT, "  ")
+                json_text.insert(INSERT, '"')
                 json_text.insert(INSERT, column_name[n])
+                json_text.insert(INSERT, '"')
                 json_text.insert(INSERT, ":")
+                json_text.insert(INSERT, '"')
                 json_text.insert(INSERT, column[n])
+                json_text.insert(INSERT, '"')
                 json_text.insert(INSERT, ",\n")
 
             except IndexError as e:
@@ -68,13 +73,43 @@ def ClearJSON():
 def ClearCSV():
     csv_text.delete("1.0", END)
 
+def ImportCSV():
+    apex = Toplevel(top)
+    apex.geometry("300x200")
+    apex.title("Import CSV")
+    apex.grid_rowconfigure((0,1,2), weight=1)
+    apex.grid_columnconfigure(0, weight=1)
+
+    def SubmitAdress():
+        csv_file = EA1.get()
+        g = open(csv_file, "r").read()
+        csv_text.insert(INSERT, g)
+        apex.destroy()
+
+    LA1 = Label(apex, text="Enter File Adress", font=("Times New Roman", 15))
+    LA1.grid(row = 0)
+    EA1 = Entry(apex, bd = 2)
+    EA1.grid(row = 1, ipadx = 50 ,ipady = 3)
+    BA1 = Button(apex, text="Submit", command = SubmitAdress, font=("Times New Roman", 15))
+    BA1.grid(row = 2)
+
+
+
+
+
+
+
+def ExportJSON():
+    with open('test.json', 'w') as f:
+        f.write(json_text.get("1.0", END))
+
 # grid
 top.grid_rowconfigure(0, weight=1)
 top.grid_rowconfigure(1, weight=15)
 top.grid_rowconfigure(2, weight=5)
 top.grid_columnconfigure(0, weight=5)
 top.grid_columnconfigure(1, weight=1)
-top.grid_columnconfigure(2, weight=3)
+top.grid_columnconfigure(2, weight=5)
 
 # Labels
 L1 = Label(top, text="CSV", font=("Times New Roman", 20))
@@ -83,10 +118,10 @@ L2 = Label(top, text="JSON", font=("Times New Roman", 20))
 L2.grid(row = 0, column = 2, sticky='n', pady=15)
 
 # TextBox
-csv_text = scrolledtext.ScrolledText(top, wrap=NONE, width=50, height=20, font=("Times New Roman", 15))
-csv_text.grid(row = 1, column = 0, sticky='n')
-json_text = scrolledtext.ScrolledText(top, wrap=NONE, width=50, height=20, font=("Times New Roman", 15))
-json_text.grid(row = 1, column = 2, sticky='n')
+csv_text = scrolledtext.ScrolledText(top, wrap=NONE, width=50, height=20, font=("Times New Roman", 15), border=2)
+csv_text.grid(row = 1, column = 0, sticky='n', padx = 15)
+json_text = scrolledtext.ScrolledText(top, wrap=NONE, width=50, height=20, font=("Times New Roman", 15), border=2)
+json_text.grid(row = 1, column = 2, sticky='n', padx = 15)
 
 # Buttons
 B1 = Button(top, text="Clear CSV", command = ClearCSV, font=("Times New Roman", 20),height=1,width=10)
@@ -95,9 +130,11 @@ B2 = Button(top, text="Convert", command = Convert, font=("Times New Roman", 20)
 B2.grid(row = 2, column = 1)
 B3 = Button(top, text="Clear JSON", command = ClearJSON, font=("Times New Roman", 20),height=1,width=10)
 B3.grid(row = 2, column = 2, sticky='e', padx = 15)
-B4 = Button(top, text="Import CSV", command = ClearCSV, font=("Times New Roman", 20),height=1,width=10)
+B4 = Button(top, text="Import CSV", command = ImportCSV, font=("Times New Roman", 20),height=1,width=10)
 B4.grid(row = 2, column = 0, padx = 15)
-B5 = Button(top, text="Export JSON", command = ClearJSON, font=("Times New Roman", 20),height=1,width=10)
+B5 = Button(top, text="Export JSON", command = ExportJSON, font=("Times New Roman", 20),height=1,width=10)
 B5.grid(row = 2, column = 2, padx = 15)
+
+
 
 top.mainloop()
