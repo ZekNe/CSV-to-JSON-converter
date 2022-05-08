@@ -1,4 +1,4 @@
-# CSV-to-JSON-converter
+# CSV to JSON Converter
 
 Simple CSV to JSON converter made with python.  
 
