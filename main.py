@@ -76,7 +76,7 @@ def ClearCSV():
 # Import CSV
 def ImportCSV():
     apex = Toplevel(top)
-    apex.geometry("300x200")
+    apex.geometry("300x150")
     apex.title("Import CSV")
     apex.grid_rowconfigure((0,1,2), weight=1)
     apex.grid_columnconfigure(0, weight=1)
@@ -88,11 +88,11 @@ def ImportCSV():
         apex.destroy()
 
     LA1 = Label(apex, text="Enter File Adress", font=("Times New Roman", 15))
-    LA1.grid(row = 0)
+    LA1.grid(row = 0, sticky = "s")
     EA1 = Entry(apex, bd = 2)
     EA1.grid(row = 1, ipadx = 50 ,ipady = 3)
     BA1 = Button(apex, text="Submit", command = SubmitAdress, font=("Times New Roman", 15))
-    BA1.grid(row = 2)
+    BA1.grid(row = 2, sticky = "n")
 
 # Export JSON
 def ExportJSON():
